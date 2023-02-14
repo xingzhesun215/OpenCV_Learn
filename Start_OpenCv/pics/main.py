@@ -7,55 +7,21 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 5
+a = 4
 
-if a == 6:
-    a = cv.imread("moon.png")
-    # 分别取得行 列 通道数
-    rows, cols, chn = a.shape
-    b = cv.split(a)[0]
-    cv.imshow("moon_b", b)
-    g = np.zeros((rows, cols), a.dtype)
-    r = np.zeros((rows, cols), a.dtype)
-    m = cv.merge([b, g, r])
-    cv.imshow("merge", m)
-    cv.waitKey()
-    cv.destroyAllWindows()
-
-# 5-通道的拆分和合并
-# 拆分split:将3个通道独立出来
-# 合并merge:将3个通道合并回彩色通道
-if a == 5:
-    hzw = cv.imread("hzw.png")
-    # 分别得到b g r通道的数据,如果需要得到单个通道数据,加上下标即可:cv.split(xx)[index]
-    hzw_b, hzw_g, hzw_r = cv.split(hzw)
-    cv.imshow("hzw原始图片", hzw)
-    cv.imshow("hzw_b", hzw_b)
-    cv.imshow("hzw_g", hzw_g)
-    cv.imshow("hzw_r", hzw_r)
-
-    # 以b,g,r的通道组合合并
-    hzw_bgr = cv.merge([hzw_b, hzw_g, hzw_r])
-    # 以r,g,b的通道组合合并
-    hzw_rgb = cv.merge([hzw_r, hzw_g, hzw_b])
-    cv.imshow("hzw_bgr", hzw_bgr)
-    cv.imshow("hzw_rgb", hzw_rgb)
-    cv.waitKey()
-    cv.destroyAllWindows()
-
-# 4-图像ROI(region of interest)-感兴趣区域
-# 把月球视觉的地图扣到露娜头上
+# 图像ROI(region of interest)-感兴趣区域
 if a == 4:
-    moon = cv.imread("moon.png")
-    # diqiu为100行100列3个通道的空白区域
-    diqiu = np.ones((100, 100, 3))
-    lena = cv.imread("lena.jpg")
-    # 取moon图片的地球区域 大概是y:0-100 x:100-200
-    diqiu = moon[0:100, 100:200]
+    a = cv.imread("lena.jpg")
+    # b为101行101列3个通道的区域
+    b = np.ones((101, 101, 3))
+    yueqiu = cv.imread("xxx.jpg")
+    # 取b是a中100-200行 130到200列的部分
+    b = a[100:200, 130:200]
     # 将b显示在a的同样大小左上角部分
-    lena[0:100, 50:150] = diqiu
-    cv.imshow("moon", moon)
-    cv.imshow("lena", lena)
+    a[0:100, 0:70] = b
+    yueqiu[0:100, 0:70] = b
+    cv.imshow("original", a)
+    cv.imshow("yueqiu", yueqiu)
     cv.waitKey()
     cv.destroyAllWindows()
 
