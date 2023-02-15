@@ -8,9 +8,45 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 13
+a = 17
 
-# 12-简单的阈值处理
+# 17-图像平滑-中值滤波 medianBlur
+if a == 17:
+    nat = cv.imread("lena.jpg")
+    r = cv.medianBlur(nat, 9)
+    cv2.imshow("original", nat)
+    cv2.imshow("result", r)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
+# 16-图像滤波-高斯滤波GaussianBlur
+if a == 16:
+    nat = cv.imread("lena.jpg")
+    r = cv.GaussianBlur(nat, (5, 5), 0)
+    cv2.imshow("original", nat)
+    cv2.imshow("result", r)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
+# 15-图像平滑-方框滤波boxFilter
+if a == 15:
+    nat = cv.imread("lena.jpg")
+    r = cv.boxFilter(nat, -1, (2, 2), normalize=0)
+    cv2.imshow("original", nat)
+    cv2.imshow("result", r)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
+# 14-图像平滑-均值滤波(暂时不太理解,后续再细究)
+if a == 14:
+    nat = cv.imread("lena.jpg")
+    r = cv.blur(nat, (5, 5))
+    cv2.imshow("original", nat)
+    cv2.imshow("result", r)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
+# 13-简单的阈值处理
 # 对于每个像素，应用相同的阈值。如果像素的值小于阈值，它就被设置为0，否则就被设置为一个最#大值。
 # 函数cv.threshold被用来应用阈值化。第一个参数是源图像，它应该是一个灰度图像。第二个参数是阈值，用于对像素值进行分类。
 # 第三个参数是最大值，它被分配给超过阈值的像素值。第四个参数由OpenCV提供了不同类型的阈值处理。
