@@ -7,16 +7,52 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 5
+a = 8
 
+# 8-图片融合
+# 结果图像=图像1*系数1+图片2*系数2+亮度调节
+# 亮度调节就是每个点的各个通道额外加的数
+if a == 8:
+    lena = cv.imread("lena.jpg")
+    cv.imshow("lena", lena)
+    print(lena)
+    pic_512 = cv.imread("512_512.png")
+    cv.imshow("512_512", pic_512)
+    result = cv.addWeighted(lena, 1, pic_512, 1, 18)
+    print("-----------------------------")
+    print(result)
+    cv.imshow("result", result)
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 7-图像加法运算 numpy加法(取模算法) opencv加法(饱和算法)
+if a == 7:
+    lena = cv.imread("lena.jpg")
+    np_add = lena + lena  # 每个坐标点的各通道相加结果和256取模
+    print(lena)
+    print("-------------------")
+    print(np_add)
+    print("-------------------")
+    cv_add = cv.add(lena, lena)  # 每个坐标点的各通道相加结果大于255取255
+    print(lena)
+    print("-------------------")
+    print(cv_add)
+    print("-------------------")
+    cv.imshow("np_add", np_add)
+    cv.imshow("cv_add", cv_add)
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 6-使用numpy生成空白通道,并进行合并操作
 if a == 6:
-    a = cv.imread("moon.png")
+    moon = cv.imread("moon.png")
     # 分别取得行 列 通道数
-    rows, cols, chn = a.shape
-    b = cv.split(a)[0]
+    rows, cols, chn = moon.shape
+    b = cv.split(moon)[0]
     cv.imshow("moon_b", b)
-    g = np.zeros((rows, cols), a.dtype)
-    r = np.zeros((rows, cols), a.dtype)
+    # 空白g r通道数据
+    g = np.zeros((rows, cols), moon.dtype)
+    r = np.zeros((rows, cols), moon.dtype)
     m = cv.merge([b, g, r])
     cv.imshow("merge", m)
     cv.waitKey()
