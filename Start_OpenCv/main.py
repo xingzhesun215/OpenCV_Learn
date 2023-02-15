@@ -1,13 +1,60 @@
 # opencv-python 4.5.5.64
 # numpy 1.24.2
 # Pycharm 2021.3.2(Community Edition)
+import cv2
 import cv2 as cv
 import numpy as np
 
 # 20230214
 print("Hello OpenCV")
 
-a = 8
+a = 10
+
+# 10-图像缩放resize
+# dst=cv2.resize(src,dsize) dsize=(size_y,size_x)
+# dst=cv2.resize(src,dsize,fx,fy)  fx,fy缩放大小
+if a == 10:
+    lena = cv.imread("lena.jpg")
+    cv.imshow("lena", lena)
+    # 指定大小缩放
+    size = (300, 300)
+    size_200 = cv2.resize(lena, size)
+    cv.imshow("resize", size_200)
+    # 按比例缩放
+    rows, cols = lena.shape[:2]
+    resize1 = cv2.resize(lena, (round(cols * 0.5), round(rows * 0.5)))
+    cv.imshow("resize1 0.5 0.5", resize1)
+
+    # 按比例缩放2 设置行，后设置列，行为0.5倍，列为0.3倍：
+    resize2 = cv2.resize(lena, None, fx=0.5, fy=0.3)
+    cv.imshow("resize2 0.5 0.3", resize2)
+
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 9-图片转换
+# BGR转灰度图  BGR转为RGB RGB转回BGR 甚至其他色彩空间也可以转换
+
+if a == 9:
+    lena = cv.imread("lena.jpg")  # 此时得到的bgr数据
+    cv.imshow("lena bgr", lena)
+    lena_gray = cv.cvtColor(lena, cv2.COLOR_BGR2GRAY)  # 从BGR转为灰度图
+    print(lena_gray.shape)
+    print(lena_gray.dtype)
+    print(lena_gray)
+    print("----------------")
+    lena_gray_bgr = cv.cvtColor(lena_gray, cv2.COLOR_GRAY2BGR)
+    print(lena_gray_bgr.shape)  # 通道变回3了
+    print(lena_gray_bgr.dtype)
+    print(lena_gray_bgr)  # 但数据变不回原来的了
+    print("----------------")
+
+    lena_rgb = cv.cvtColor(lena, cv2.COLOR_BGR2RGB)  # BGR转到RGB
+    cv.imshow("lena rgb", lena_rgb)
+    lena_bgr = cv.cvtColor(lena_rgb, cv2.COLOR_RGB2BGR)  # RGB转到BGR
+    cv.imshow("lena bgr2", lena_bgr)  # 和lena原图一毛一样
+    cv.waitKey()
+    cv.destroyAllWindows()
 
 # 8-图片融合
 # 结果图像=图像1*系数1+图片2*系数2+亮度调节
@@ -18,7 +65,7 @@ if a == 8:
     print(lena)
     pic_512 = cv.imread("512_512.png")
     cv.imshow("512_512", pic_512)
-    result = cv.addWeighted(lena, 1, pic_512, 1, 18)
+    result = cv.addWeighted(lena, 1, pic_512, 0, 0)  # 最后一位为亮度
     print("-----------------------------")
     print(result)
     cv.imshow("result", result)
