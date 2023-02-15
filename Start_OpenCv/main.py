@@ -8,12 +8,62 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 10
+a = 13
 
-# 10-图像缩放resize
+# 12-简单的阈值处理
+# 对于每个像素，应用相同的阈值。如果像素的值小于阈值，它就被设置为0，否则就被设置为一个最#大值。
+# 函数cv.threshold被用来应用阈值化。第一个参数是源图像，它应该是一个灰度图像。第二个参数是阈值，用于对像素值进行分类。
+# 第三个参数是最大值，它被分配给超过阈值的像素值。第四个参数由OpenCV提供了不同类型的阈值处理。
+if a == 13:
+    lena = cv.imread("lena.jpg", 0)
+    r, b1 = cv2.threshold(lena, 127, 255, cv2.THRESH_BINARY)  # 二进制阈值化:比阈值大设为最大值,否则为0
+    r, b2 = cv2.threshold(lena, 127, 255, cv2.THRESH_BINARY_INV)  # 反二进制阈值化:比阈值大设为0,否则为最大值
+    r, b3 = cv2.threshold(lena, 127, 255, cv2.THRESH_TRUNC)  # 截断阈值化:比阈值大的都设置成阈值
+    r, b4 = cv2.threshold(lena, 127, 255, cv2.THRESH_TOZERO)  # 反阈值化为0:大于阈值的为0
+    r, b5 = cv2.threshold(lena, 127, 255, cv2.THRESH_TOZERO_INV)  # 阈值化为0:小于阈值则设为0
+    cv.imshow("lena", lena)
+    print("---------------lena----------------")
+    print(lena)
+    cv.imshow("BINARY", b1)
+    print("---------------BINARY----------------")
+    print(b1)
+    cv.imshow("BINARY_INV", b2)
+    print("---------------BINARY_INV----------------")
+    print(b2)
+    cv.imshow("TRUNC", b3)
+    print("---------------TRUNC----------------")
+    print(b3)
+    cv.imshow("TOZERO", b4)
+    print("--------------TOZERO-----------------")
+    print(b4)
+    cv.imshow("TOZERO_INV", b5)
+    print("--------------TOZERO_INV-----------------")
+    print(b5)
+
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 12-图像翻转
+# flipCode = 0 :以x轴上下翻转
+# flipCode > 0 :以y轴左右翻转
+# flipCode < 0 :先水平 再左右翻转
+if a == 12:
+    lufei = cv.imread("lufei2.png")
+    cv.imshow("lufei", lufei)
+    lufei_x = cv.flip(lufei, 0)
+    lufei_y = cv.flip(lufei, 1)
+    lufei_xy = cv.flip(lufei, -1)
+    cv.imshow("lufei up_down", lufei_x)
+    cv.imshow("lufei left_right", lufei_y)
+    cv.imshow("lufei up_down_left_right", lufei_xy)
+
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 11-图像缩放resize
 # dst=cv2.resize(src,dsize) dsize=(size_y,size_x)
 # dst=cv2.resize(src,dsize,fx,fy)  fx,fy缩放大小
-if a == 10:
+if a == 11:
     lena = cv.imread("lena.jpg")
     cv.imshow("lena", lena)
     # 指定大小缩放
@@ -28,6 +78,26 @@ if a == 10:
     # 按比例缩放2 设置行，后设置列，行为0.5倍，列为0.3倍：
     resize2 = cv2.resize(lena, None, fx=0.5, fy=0.3)
     cv.imshow("resize2 0.5 0.3", resize2)
+
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+# 10-色彩空间转换-寻找蓝色的物体
+# HSV比BGR更容易表示一种颜色
+# 1,读图(或者读视频帧) 2,从BGR转为HSV 3,对HSV图像中的蓝色范围进行阈值处理 4,单独提取蓝色物体,可以在该图像上操作
+if a == 10:
+    frame = cv.imread("blue_test.png")
+    cv.imshow("frame", frame)
+
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    # 定义hsv中蓝色的范围
+    lower_blue = np.array([100, 50, 50])
+    upper_blue = np.array([130, 255, 255])
+    # 得到唯一的蓝色图片
+    mask = cv.inRange(hsv, lower_blue, upper_blue)
+    res = cv.bitwise_and(frame, frame, mask)
+    cv.imshow("mask", mask)
+    cv.imshow("res", res)
 
     cv.waitKey()
     cv.destroyAllWindows()
