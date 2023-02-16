@@ -8,7 +8,31 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 17
+a = 18
+# 18-绘制图形及文字
+if a == 18:
+    canvas = np.zeros((600, 600, 3), np.uint8)  # 全0的黑色背景
+    # canvas = np.ones((600, 600, 3), np.uint8) * 255  # 全白背景
+
+    # 绘制直线
+    cv.line(canvas, (0, 0), (200, 90), (255, 0, 0), 5)  # cv2.line(绘制图层,(起点x,起点y),(终点x,终点y),(b,g,r),粗细大小)
+
+    # 绘制矩阵
+    cv.rectangle(canvas, (250, 250), (300, 430), (0, 255, 255),
+                 2)  # cv2.rectangle(绘制图层,(左上角x,左上角y),(右下角x,右下角y),(b,g,r),划线粗细) 划线粗细为-1时表示实心矩阵
+
+    # 绘制圆形
+    cv.circle(canvas, (400, 400), 50, (0, 0, 255), -1)  # cv2.circle(绘制图层,(圆心x,圆心y),半径,(b,g,r),划线粗细) 划线粗细为负数时表示实心圆
+
+    # 绘制其他边形
+    pts = np.array([[30, 50], [30, 250], [130, 250], [130, 350], [230, 350]], np.int32)
+    cv.polylines(canvas, [pts], True, (100, 100, 100), 1)  # cv2.polylines(绘制图层,点集,是否闭合,(b,g,r),划线粗细)
+
+    # 绘制文字 cv.putText(绘制图层,内容,(文字左下角x,文字左下角y),字体样式,字体大小,字体颜色,线条宽度)
+    cv.putText(canvas, "HelloOpenCV", (100, 100), cv2.FONT_HERSHEY_TRIPLEX, 2, (66, 66, 66), 3)
+    cv.imshow("Canvas", canvas)
+    cv.waitKey()
+    cv.destroyAllWindows()
 
 # 17-图像平滑-中值滤波 medianBlur
 if a == 17:
