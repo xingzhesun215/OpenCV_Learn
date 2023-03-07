@@ -8,7 +8,34 @@ import numpy as np
 # 20230214
 print("Hello OpenCV")
 
-a = 18
+a = 20
+
+if a == 20:
+    img = cv.imread("pic_240.png")
+    rows, cols = img.shape[:2]
+    print(rows, cols)
+    pts1 = np.float32([[50, 10], [0, 229], [229, 0], [190, 229]])
+    pts2 = np.float32([[0, 0], [229, 0], [0, 229], [229, 229]])
+    M = cv.getPerspectiveTransform(pts1, pts2)
+    move = cv.warpPerspective(img, M, (cols, rows))
+    cv.imshow("Original", img)
+    cv.imshow("Perspective", move)
+    cv.waitKey()
+    cv.destroyAllWindows()
+
+if a == 19:
+    img = cv.imread("lena.jpg")
+    hei, wid = img.shape[:2]
+    p1 = np.float32([[0, 0], [wid - 1, 0], [0, hei - 1]])
+    p2 = np.float32([[0, hei * 0.33], [wid * 0.85, hei * 0.25], [wid * 0.15, hei * 0.7]])
+    M = cv.getAffineTransform(p1, p2)
+    print(M)  # [[ 8.51663429e-01  1.50293548e-01  0.00000000e+00] [-8.01565689e-02  3.70724045e-01  1.68960007e+02]]
+    move = cv.warpAffine(img, M, (wid, hei))
+    cv.imshow("lena", img)
+    cv.imshow("lena rotation", move)
+    cv.waitKey()
+    cv.destroyAllWindows()
+
 # 18-绘制图形及文字
 if a == 18:
     canvas = np.zeros((600, 600, 3), np.uint8)  # 全0的黑色背景
@@ -23,6 +50,10 @@ if a == 18:
 
     # 绘制圆形
     cv.circle(canvas, (400, 400), 50, (0, 0, 255), -1)  # cv2.circle(绘制图层,(圆心x,圆心y),半径,(b,g,r),划线粗细) 划线粗细为负数时表示实心圆
+
+    # 绘制椭圆
+    cv.ellipse(canvas, (256, 256), (100, 70), 30, 0, 360, 255,
+               -1)  # cv2.ellipse(绘制图层,(椭圆圆心x,椭圆圆心y),(长轴长,短轴长),椭圆整体旋转角度,椭圆绘制开始角度,椭圆绘制停止角度,颜色,划线粗细)划线粗细为-1时表示实心椭圆
 
     # 绘制其他边形
     pts = np.array([[30, 50], [30, 250], [130, 250], [130, 350], [230, 350]], np.int32)
@@ -75,30 +106,18 @@ if a == 14:
 # 函数cv.threshold被用来应用阈值化。第一个参数是源图像，它应该是一个灰度图像。第二个参数是阈值，用于对像素值进行分类。
 # 第三个参数是最大值，它被分配给超过阈值的像素值。第四个参数由OpenCV提供了不同类型的阈值处理。
 if a == 13:
-    lena = cv.imread("lena.jpg", 0)
-    r, b1 = cv2.threshold(lena, 127, 255, cv2.THRESH_BINARY)  # 二进制阈值化:比阈值大设为最大值,否则为0
-    r, b2 = cv2.threshold(lena, 127, 255, cv2.THRESH_BINARY_INV)  # 反二进制阈值化:比阈值大设为0,否则为最大值
-    r, b3 = cv2.threshold(lena, 127, 255, cv2.THRESH_TRUNC)  # 截断阈值化:比阈值大的都设置成阈值
-    r, b4 = cv2.threshold(lena, 127, 255, cv2.THRESH_TOZERO)  # 反阈值化为0:大于阈值的为0
-    r, b5 = cv2.threshold(lena, 127, 255, cv2.THRESH_TOZERO_INV)  # 阈值化为0:小于阈值则设为0
-    cv.imshow("lena", lena)
-    print("---------------lena----------------")
-    print(lena)
+    color_0_255 = cv.imread("0_255.png", 0)  # 灰度图像素带
+    r, b1 = cv2.threshold(color_0_255, 127, 255, cv2.THRESH_BINARY)  # 二进制阈值化:比阈值大设为最大值,否则为0
+    r, b2 = cv2.threshold(color_0_255, 127, 255, cv2.THRESH_BINARY_INV)  # 反二进制阈值化:比阈值大设为0,否则为最大值
+    r, b3 = cv2.threshold(color_0_255, 127, 255, cv2.THRESH_TRUNC)  # 截断阈值化:比阈值大的都设置成阈值
+    r, b4 = cv2.threshold(color_0_255, 127, 255, cv2.THRESH_TOZERO)  # 反阈值化为0:大于阈值的为0
+    r, b5 = cv2.threshold(color_0_255, 127, 255, cv2.THRESH_TOZERO_INV)  # 阈值化为0:小于阈值则设为0
+    cv.imshow("orginal 0~255", color_0_255)
     cv.imshow("BINARY", b1)
-    print("---------------BINARY----------------")
-    print(b1)
     cv.imshow("BINARY_INV", b2)
-    print("---------------BINARY_INV----------------")
-    print(b2)
     cv.imshow("TRUNC", b3)
-    print("---------------TRUNC----------------")
-    print(b3)
     cv.imshow("TOZERO", b4)
-    print("--------------TOZERO-----------------")
-    print(b4)
     cv.imshow("TOZERO_INV", b5)
-    print("--------------TOZERO_INV-----------------")
-    print(b5)
 
     cv.waitKey()
     cv.destroyAllWindows()
@@ -108,7 +127,7 @@ if a == 13:
 # flipCode > 0 :以y轴左右翻转
 # flipCode < 0 :先水平 再左右翻转
 if a == 12:
-    lufei = cv.imread("lufei2.png")
+    lufei = cv.imread("lufei.png")
     cv.imshow("lufei", lufei)
     lufei_x = cv.flip(lufei, 0)
     lufei_y = cv.flip(lufei, 1)
